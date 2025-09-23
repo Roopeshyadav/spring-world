@@ -1,12 +1,12 @@
 package com.example.SimpleWebApp.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -15,9 +15,13 @@ import org.springframework.beans.factory.annotation.Value;
 public class Product {
 
     @Id
-    private int prodId;
-
-    private String prodName;
-
-    private int price;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
+    private String description;
+    private String brand;
+    private double price;
+    private String category;
+    private LocalDate releaseDate;
+    private int quantity;
 }
