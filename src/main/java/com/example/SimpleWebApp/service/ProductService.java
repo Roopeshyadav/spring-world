@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -25,5 +26,15 @@ public class ProductService {
 
     public void addProduct(Product product){
         this.productList.add(product);
+    }
+
+    public void updateProduct(Product product){
+        Product existingProduct = getProduct(product.getProdId());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setProdName(product.getProdName());
+    }
+
+    public void deleteProduct(int productId){
+        productList.removeIf(prod -> prod.getProdId() == productId);
     }
 }
