@@ -1,5 +1,6 @@
 package com.example.SimpleWebApp.config;
 
+import com.example.SimpleWebApp.filter.JWTFilter;
 import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 //@EnableWebSecurity
@@ -29,6 +31,9 @@ public class SecurityConfig {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
+    @Autowired
+    private JWTFilter jwtFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(customizer -> customizer.disable())
@@ -36,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/register", "/login")
                         .permitAll()
                         .anyRequest().authenticated())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 //                .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults())
                 .build();
